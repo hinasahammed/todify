@@ -9,6 +9,17 @@ class SearchView extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Search"),
       ),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            SearchBar(
+              leading: Icon(Icons.search),
+              hintText: "Search ",
+            )
+          ],
+        ),
+      ),
     );
   }
 }
