@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todify/res/utils/utils.dart';
 import 'package:todify/view/home/widget/add_task_sheet.dart';
+import 'package:todify/view/home/widget/edit_task_dialogue.dart';
 
 class HomeServices {
   void addTask(BuildContext context) {
@@ -60,5 +62,35 @@ class HomeServices {
     date = pref.getStringList("allDates") ?? [];
 
     return date;
+  }
+
+  void removeTask(String item) async {
+    final pref = await SharedPreferences.getInstance();
+    var val = pref.getStringList("allTask") ?? [];
+    val.remove(item);
+    pref.setStringList("allTask", val);
+  }
+
+  void showEdit(BuildContext context, String task) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: EditTaskDialogue(
+              task: task,
+            ),
+          );
+        });
+  }
+
+  void updateTask(BuildContext context, String task, String newTask) async {
+    final pref = await SharedPreferences.getInstance();
+    var val = pref.getStringList("allTask") ?? [];
+    var index = val.indexOf(task);
+    print(index);
+    val[index] = newTask;
+    print(val);
+    pref.setStringList("allTask", val);
+    Navigator.pop(context);
   }
 }
