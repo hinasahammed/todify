@@ -51,7 +51,6 @@ class HomeServices {
     List<String> task = [];
     final pref = await SharedPreferences.getInstance();
     task = pref.getStringList("allTask") ?? [];
-    pref.getStringList("allDates");
     return task;
   }
 
