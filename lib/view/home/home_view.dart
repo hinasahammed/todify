@@ -34,34 +34,41 @@ class HomeView extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) => Card(
                     child: ListTile(
-                      title: Text(
-                        snapshot.data![index],
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                          color: theme.colorScheme.primary,
+                        title: Text(
+                          snapshot.data![index],
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            color: theme.colorScheme.primary,
+                          ),
                         ),
-                      ),
-                      subtitle: FutureBuilder(
-                        future: HomeServices().fetchDate(),
-                        builder: (context, snapshot) {
-                          if (snapshot.data == null) {
-                            return Text(
-                                DateFormat.yMMMd().format(DateTime.now()));
-                          } else {
-                            return Text(
-                              snapshot.data![index],
-                              style: theme.textTheme.labelLarge!.copyWith(
-                                color:
-                                    theme.colorScheme.primary.withOpacity(.4),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      trailing: Icon(
-                        Icons.delete,
-                        color: theme.colorScheme.error,
-                      ),
-                    ),
+                        subtitle: FutureBuilder(
+                          future: HomeServices().fetchDate(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data == null) {
+                              return Text(
+                                  DateFormat.yMMMd().format(DateTime.now()));
+                            } else {
+                              return Text(
+                                snapshot.data![index],
+                                style: theme.textTheme.labelLarge!.copyWith(
+                                  color:
+                                      theme.colorScheme.primary.withOpacity(.4),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                        trailing: Wrap(
+                          children: [
+                            Icon(
+                              Icons.edit,
+                              color: theme.colorScheme.primary,
+                            ),
+                            Icon(
+                              Icons.delete,
+                              color: theme.colorScheme.error,
+                            ),
+                          ],
+                        )),
                   ),
                 );
               }
