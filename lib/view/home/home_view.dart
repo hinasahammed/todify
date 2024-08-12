@@ -47,13 +47,13 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         subtitle: FutureBuilder(
                           future: HomeServices().fetchDate(),
-                          builder: (context, snapshot) {
-                            if (snapshot.data == null) {
+                          builder: (context, date) {
+                            if (date.data == null) {
                               return Text(
                                   DateFormat.yMMMd().format(DateTime.now()));
                             } else {
                               return Text(
-                                snapshot.data![index],
+                                date.data![index],
                                 style: theme.textTheme.labelLarge!.copyWith(
                                   color:
                                       theme.colorScheme.primary.withOpacity(.4),
@@ -64,13 +64,25 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         trailing: Wrap(
                           children: [
-                            Icon(
-                              Icons.edit,
-                              color: theme.colorScheme.primary,
+                            IconButton(
+                              onPressed: () {
+                                HomeServices()
+                                    .showEdit(context, snapshot.data![index]);
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                color: theme.colorScheme.primary,
+                              ),
                             ),
-                            Icon(
-                              Icons.delete,
-                              color: theme.colorScheme.error,
+                            IconButton(
+                              onPressed: () {
+                                HomeServices()
+                                    .removeTask(snapshot.data![index]);
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: theme.colorScheme.error,
+                              ),
                             ),
                           ],
                         )),
