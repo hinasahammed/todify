@@ -24,7 +24,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
     return Container(
       padding: const EdgeInsets.all(16),
       width: size.width,
-      height: size.height * .45,
+      height: size.height,
       child: Form(
         key: _formKey,
         child: Column(
@@ -63,7 +63,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                     : DateFormat.yMMMEd().format(selectedDate!),
               ),
             ),
-            const Spacer(),
+            const Gap(50),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
