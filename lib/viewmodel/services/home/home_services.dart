@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todify/res/utils/utils.dart';
 import 'package:todify/view/home/widget/add_task_sheet.dart';
 import 'package:todify/view/home/widget/edit_task_dialogue.dart';
 
 class HomeServices {
+  static ValueNotifier<List<String>> allTask = ValueNotifier<List<String>>([]);
+
   void addTask(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -47,6 +48,12 @@ class HomeServices {
     if (context.mounted) {
       Navigator.pop(context);
     }
+  }
+
+  void getTask() async {
+    final pref = await SharedPreferences.getInstance();
+    var val = pref.getStringList("allTask") ?? [];
+    allTask.value = val;
   }
 
   Future<List<String>> fetchTask() async {
