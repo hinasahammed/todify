@@ -76,7 +76,7 @@ class HomeServices {
     date.removeAt(index);
     pref.setStringList("allTask", task);
     pref.setStringList("allDates", date);
-    allTask.value = date;
+    allTask.value = task;
     allDates.value = date;
   }
 
@@ -100,10 +100,11 @@ class HomeServices {
     final pref = await SharedPreferences.getInstance();
     var val = pref.getStringList("allTask") ?? [];
     var index = val.indexOf(task);
-    print(index);
     val[index] = newTask;
-    print(val);
     pref.setStringList("allTask", val);
-    Navigator.pop(context);
+    getTask();
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
   }
 }
