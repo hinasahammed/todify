@@ -6,6 +6,7 @@ import 'package:todify/view/home/widget/edit_task_dialogue.dart';
 
 class HomeServices {
   static ValueNotifier<List<String>> allTask = ValueNotifier<List<String>>([]);
+  static ValueNotifier<List<String>> allDates = ValueNotifier<List<String>>([]);
 
   void addTask(BuildContext context) {
     showModalBottomSheet(
@@ -39,11 +40,15 @@ class HomeServices {
     if (task == null || date == null) {
       pref.setStringList("allTask", [taskName]);
       pref.setStringList("allDates", [selectedDate]);
+      getTask();
+      getDate();
     } else {
       task.add(taskName);
       date.add(selectedDate);
       pref.setStringList("allTask", task);
       pref.setStringList("allDates", date);
+      getTask();
+      getDate();
     }
     if (context.mounted) {
       Navigator.pop(context);
@@ -56,26 +61,23 @@ class HomeServices {
     allTask.value = val;
   }
 
-  Future<List<String>> fetchTask() async {
-    List<String> task = [];
+  void getDate() async {
     final pref = await SharedPreferences.getInstance();
-    task = pref.getStringList("allTask") ?? [];
-    return task;
-  }
-
-  Future<List<String>> fetchDate() async {
-    List<String> date = [];
-    final pref = await SharedPreferences.getInstance();
-    date = pref.getStringList("allDates") ?? [];
-
-    return date;
+    var val = pref.getStringList("allDates") ?? [];
+    allDates.value = val;
   }
 
   void removeTask(String item) async {
     final pref = await SharedPreferences.getInstance();
-    var val = pref.getStringList("allTask") ?? [];
-    val.remove(item);
-    pref.setStringList("allTask", val);
+    var task = pref.getStringList("allTask") ?? [];
+    var date = pref.getStringList("allDates") ?? [];
+    var index = task.indexOf(item);
+    task.removeAt(index);
+    date.removeAt(index);
+    pref.setStringList("allTask", task);
+    pref.setStringList("allDates", date);
+    allTask.value = date;
+    allDates.value = date;
   }
 
   void showEdit(BuildContext context, String task) {
@@ -90,7 +92,11 @@ class HomeServices {
         });
   }
 
-  void updateTask(BuildContext context, String task, String newTask) async {
+  void updateTask(
+    BuildContext context,
+    String task,
+    String newTask,
+  ) async {
     final pref = await SharedPreferences.getInstance();
     var val = pref.getStringList("allTask") ?? [];
     var index = val.indexOf(task);
