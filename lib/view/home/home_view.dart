@@ -70,10 +70,15 @@ class _HomeViewState extends State<HomeView> {
                             .removeTaskConfirm(context, value[index]);
                         return isDismisssible;
                       },
-                      onDismissed: (direction) {},
                       key: ValueKey(value),
                       child: Card(
+                        clipBehavior: Clip.hardEdge,
                         child: ListTile(
+                            tileColor: theme.colorScheme.primaryContainer,
+                            leading: Checkbox(
+                              value: true,
+                              onChanged: (value) {},
+                            ),
                             title: Text(
                               value[index],
                               style: theme.textTheme.bodyLarge!.copyWith(

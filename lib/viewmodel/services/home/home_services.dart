@@ -128,7 +128,13 @@ class HomeServices {
               removeTask(item);
               getTask();
               getDate();
+
               Navigator.pop(context);
+              Utils().showFlushToast(
+                context,
+                "Success",
+                "Removed task successfully",
+              );
             },
             btnText: "Remove",
           ),
