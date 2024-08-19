@@ -35,54 +35,60 @@ class _HomeViewState extends State<HomeView> {
                   return ListView.builder(
                     itemCount: value.length,
                     shrinkWrap: true,
-                    itemBuilder: (context, index) => Card(
-                      child: ListTile(
-                          title: Text(
-                            value[index],
-                            style: theme.textTheme.bodyLarge!.copyWith(
-                              color: theme.colorScheme.primary,
+                    itemBuilder: (context, index) => Dismissible(
+                      
+                      key: ValueKey(value),
+                      child: Card(
+                        child: ListTile(
+                            title: Text(
+                              value[index],
+                              style: theme.textTheme.bodyLarge!.copyWith(
+                                color: theme.colorScheme.primary,
+                              ),
                             ),
-                          ),
-                          subtitle: ValueListenableBuilder(
-                            valueListenable: HomeServices.allDates,
-                            builder: (context, value, child) {
-                              if (value.isEmpty || value == []) {
-                                return Text(
-                                    DateFormat.yMMMd().format(DateTime.now()));
-                              } else {
-                                return Text(
-                                  value[index],
-                                  style: theme.textTheme.labelLarge!.copyWith(
-                                    color: theme.colorScheme.primary
-                                        .withOpacity(.4),
+                            subtitle: ValueListenableBuilder(
+                              valueListenable: HomeServices.allDates,
+                              builder: (context, value, child) {
+                                if (value.isEmpty || value == []) {
+                                  return Text(DateFormat.yMMMd()
+                                      .format(DateTime.now()));
+                                } else {
+                                  return Text(
+                                    value[index],
+                                    style: theme.textTheme.labelLarge!.copyWith(
+                                      color: theme.colorScheme.primary
+                                          .withOpacity(.4),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                            trailing: Wrap(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    HomeServices()
+                                        .showEdit(context, value[index]);
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: theme.colorScheme.primary,
                                   ),
-                                );
-                              }
-                            },
-                          ),
-                          trailing: Wrap(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  HomeServices()
-                                      .showEdit(context, value[index]);
-                                },
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: theme.colorScheme.primary,
                                 ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  HomeServices().removeTask(value[index],);
-                                },
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: theme.colorScheme.error,
+                                IconButton(
+                                  onPressed: () {
+                                    HomeServices().removeTask(
+                                      value[index],
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: theme.colorScheme.error,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )),
+                              ],
+                            )),
+                      ),
                     ),
                   );
                 }
