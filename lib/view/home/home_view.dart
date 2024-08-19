@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:todify/viewmodel/services/home/home_services.dart';
 
@@ -36,7 +37,40 @@ class _HomeViewState extends State<HomeView> {
                     itemCount: value.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => Dismissible(
-                      
+                      background: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: theme.colorScheme.error,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.arrow_back,
+                              color: theme.colorScheme.onError,
+                            ),
+                            const Gap(20),
+                            Text(
+                              "Remove",
+                              style: theme.textTheme.bodyLarge!.copyWith(
+                                color: theme.colorScheme.onError,
+                              ),
+                            ),
+                            const Gap(20),
+                            Icon(
+                              Icons.delete,
+                              color: theme.colorScheme.onError,
+                            ),
+                            const Gap(20),
+                          ],
+                        ),
+                      ),
+                      confirmDismiss: (direction) async {
+                        var isDismisssible = await HomeServices()
+                            .removeTaskConfirm(context, value[index]);
+                        return isDismisssible;
+                      },
+                      onDismissed: (direction) {},
                       key: ValueKey(value),
                       child: Card(
                         child: ListTile(
@@ -73,17 +107,6 @@ class _HomeViewState extends State<HomeView> {
                                   icon: Icon(
                                     Icons.edit,
                                     color: theme.colorScheme.primary,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    HomeServices().removeTask(
-                                      value[index],
-                                    );
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: theme.colorScheme.error,
                                   ),
                                 ),
                               ],

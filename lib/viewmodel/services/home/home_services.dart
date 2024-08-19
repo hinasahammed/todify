@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todify/res/components/common/custom_button.dart';
 import 'package:todify/res/utils/utils.dart';
 import 'package:todify/view/home/widget/add_task_sheet.dart';
 import 'package:todify/view/home/widget/edit_task_dialogue.dart';
@@ -106,5 +107,34 @@ class HomeServices {
     if (context.mounted) {
       Navigator.pop(context);
     }
+  }
+
+  Future<bool> removeTaskConfirm(BuildContext context, String item) async {
+    bool isDissmissible = false;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text("Are you want to remove task?"),
+        icon: const Icon(Icons.delete),
+        title: const Text("Remove"),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel")),
+          CustomButton(
+            onPressed: () {
+              removeTask(item);
+              getTask();
+              getDate();
+              Navigator.pop(context);
+            },
+            btnText: "Remove",
+          ),
+        ],
+      ),
+    );
+    return isDissmissible;
   }
 }
