@@ -15,6 +15,8 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     HomeServices().getTask();
+    HomeServices().getDate();
+    HomeServices().getTaskStatus();
   }
 
   @override
@@ -75,9 +77,18 @@ class _HomeViewState extends State<HomeView> {
                         clipBehavior: Clip.hardEdge,
                         child: ListTile(
                             tileColor: theme.colorScheme.primaryContainer,
-                            leading: Checkbox(
-                              value: true,
-                              onChanged: (value) {},
+                            leading: ValueListenableBuilder(
+                              valueListenable: HomeServices.allTaskStatus,
+                              builder: (context, value, child) => Checkbox(
+                                value: value[index] == "true",
+                                onChanged: (value) {
+                                  if (value!) {
+                                    HomeServices().updateStatus("true", index);
+                                  } else {
+                                    HomeServices().updateStatus("false", index);
+                                  }
+                                },
+                              ),
                             ),
                             title: Text(
                               value[index],
